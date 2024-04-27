@@ -16,4 +16,3 @@ You can then pass this on build through `deploy` the deploy command will have so
 - version - lists the current version
 - log - outputs the log from what has been created
 - create - creates a deployment specification based on the last template and accepts `args...` for as many deployments that you want to generate
-
