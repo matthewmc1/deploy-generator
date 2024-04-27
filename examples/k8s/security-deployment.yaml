@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: my-app
+  template:
+    metadata:
+      labels:
+        app: my-app
+    spec:
+      topologySpreadConstraints:
+      - maxSkew: 1 
+        topologyKey: topology.kubernetes.io/zone  
+        whenUnsatisfiable: DoNotSchedule  
+      securityContext:
+        readOnlyRootFilesystem: true
+      containers:
+      - name: my-app
+        image: my-app-image
+        securityContext:
+          runAsUser: 1000  # Non-root user
+          capabilities:
+            drop: ["ALL"]  # Remove all capabilities
+        resources:
+          requests:
+            memory: "100Mi"
+            cpu: "100m"
+          limits:
+            memory: "200Mi"
+            cpu: "200m"
+      serviceAccountName: my-app-sa

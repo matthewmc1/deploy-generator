@@ -1,0 +1,6 @@
+name: app
+highAvailability: true 
+image: <link>
+labels: |
+ "service-type:frontend"
+ "application:client-facing"

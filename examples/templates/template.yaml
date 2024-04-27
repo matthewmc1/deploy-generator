@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Deployment.name }}
+spec:
+  replicas: {{ if .Deployment.highAvailability == true : 3 else 1}}
+  selector:
+    matchLabels:
+        {{ foreach line in .Deployment.labels }}
+  template:
+    metadata:
+      labels:
+        {{ foreach line in .Deployment.labels }}
+    spec:
+      topologySpreadConstraints:
+      - maxSkew: 1 
+        topologyKey: topology.kubernetes.io/zone  
+        whenUnsatisfiable: DoNotSchedule  
+      securityContext:
+        readOnlyRootFilesystem: true
+      containers:
+      - name: {{ .Deployment.name }}
+        image: {{ .Deployment.image }}
+        securityContext:
+          runAsUser: 1000  
+          capabilities:
+            drop: ["ALL"]  
+        resources:
+          requests:
+            memory: "50Mi"
+            cpu: "100m"
+          limits:
+            memory: "200Mi"
