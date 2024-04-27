@@ -29,5 +29,14 @@ func BaseCommand() *cobra.Command {
 	}
 	deploydef.AddCommand(versionCmd)
 
+	create := &cobra.Command{
+		Use:   "create",
+		Short: "Generates a compliant k8s manifest",
+		Run: func(cmd *cobra.Command, args []string) {
+			internal.Generator(args[0])
+		},
+	}
+	deploydef.AddCommand(create)
+
 	return deploydef
 }
