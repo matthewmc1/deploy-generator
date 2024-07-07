@@ -3,6 +3,7 @@ package internal
 import (
 	"fmt"
 	"os"
+	"validator/service-definition/data"
 
 	"github.com/h2non/filetype"
 )
@@ -15,10 +16,10 @@ func validateConfig() {
 
 }
 
-func checkFileType(file string) {
+func checkFileType(file string) string {
 	check, err := os.Open(file)
 	if err != nil {
-		fmt.Println("Error opening the file")
+		fmt.Println(err)
 		os.Exit(1)
 	}
 
@@ -31,12 +32,24 @@ func checkFileType(file string) {
 
 	kind, err := filetype.Match(buff)
 	if err != nil {
-		fmt.Println("Error reading content to determine filetype")
+		fmt.Printf("Error reading content to determine filetype %v", kind)
 		os.Exit(1)
 	}
-	fmt.Printf("File type: %s. MIME: %s\n", kind.Extension, kind.MIME.Value)
+
+	data, err := os.ReadFile(file)
+	if err != nil {
+		fmt.Println("Error reading data from file")
+		os.Exit(1)
+	}
+
+	fmt.Println(string(data))
+
+	return string(data)
 }
 
 func Generator(file string) {
-	checkFileType(file)
+	d := checkFileType(file)
+	service := data.Decode(d)
+
+	fmt.Println(service.Labels)
 }

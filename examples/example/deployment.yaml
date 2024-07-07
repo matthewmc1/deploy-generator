@@ -1,6 +1,6 @@
 name: notes
 highAvailability: true 
-image: <link>
-labels: |
- "service-type:frontend"
- "application:client-facing"
+image: "http:///link.com"
+labels: 
+ application: "client-facing"
+ service-type: "frontend"
