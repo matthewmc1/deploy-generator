@@ -1,4 +1,4 @@
-name: app
+name: notes
 highAvailability: true 
 image: <link>
 labels: |

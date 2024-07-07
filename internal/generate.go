@@ -24,6 +24,10 @@ func checkFileType(file string) {
 
 	buff := make([]byte, 512)
 	_, err = check.Read(buff)
+	if err != nil {
+		fmt.Println("Error reading content to determine filetype")
+		os.Exit(1)
+	}
 
 	kind, err := filetype.Match(buff)
 	if err != nil {
